@@ -39,13 +39,88 @@ namespace MyCompanyShop {
     use ShopingCartFramework\ProductInterface;
     use ShopingCartFramework\ShippingMethodInterface;
 
-    // @TODO Implement the abstract factory MyShopProductFactory
+    interface Visitors{
+        function writeData();   
+    }
+    
+    class MyShopProductFactory implements ShopFactoryInterface{
+        function __constructor($productData, $shippingMethodData){
+            $this->products = $productData;
+            $this->shipping = $shippingMethodData;
+        }
+        function createProduct($productCode){
+            if(!empty($this->products[$productCode]))
+                return MyShopProduct(
+                    $productCode, 
+                    $this->products[$productCode][0],
+                    $this->products[$productCode][1]
+                );
+            return null;
+        }
+        function createShippingMethod($name){
+            if(!empty($this->shipping[$name]))
+                return MyShopProduct(
+                    $name, 
+                    $this->shipping[$name]
+                );
+            return null;
+        }
+        
+    }
 
-    // @TODO Implement the product MyShopProduct
+    class MyShopProduct implements ProductInterface{
+        private $data = [];
+        function __constructor($code, $name, $weight){
+               $this->data['code'] = $code;
+               $this->data['name'] = $name;
+               $this->data['weight'] = $weigth;
+        }
+        
+        function getShopProductCode(){
+            return $this->data['code'];
+        }
+        
+        function getShopDescription(){
+            return $this->data['code'].' - '.$this->data['name'];
+        }
+        
+        function getCost(Visitors $visitor){
+            return $visitor->writeData($this->data);
+        }
+        
+    }
 
-    // @TODO Implement Shipping Method MyShippingMethod
+    class MyShippingMethod implements ShippingMethodInterface{
+        function __constructor($name, $params){
+            $this->data['name'] = $name;
+            $this->data['params']['weight'] = $params[1];
+            $this->data['params']['miles'] = $params[0];
+        }
+        
+        function getName(){
+            return $this->data['name'];
+        }
+        
+        function getCostEstimate($miles, ProductInterface $product){
+            return ($product->getCost(new CostEstimate($this->data['params'])))->calc();
+        }
+    }
 
-
+    class CostEstimate implements Visitors{
+        function __constructor($factors, $miles){
+            $this->factors = $factors;
+            $this->miles = $miles;
+        }
+        
+        function writeData($data){
+            $this->product = $data; 
+        }
+        
+        function calc(){
+            return $this->miles * $this->factors['miles'] + $this->product['weight'] * $this->factors['weight'];
+        }
+    }
+    
 }
 
 namespace {
