@@ -29,12 +29,15 @@ class InputText implements HtmlElement
 abstract class HtmlDecorator implements HtmlElement
 {
     protected $element;
-
-    abstract public function __toString(){
-        return "<input type=\"text\" id=\"{$this->name}\" name=\"{$this->name}\" />\n";
+    
+    public function __construct(HTMLElement $element){
+        $this->element = $element;
     }
-    abstract public function getName(){
-        return $this->name;
+    public function __toString(){
+        return $this->element->__toString();
+    }
+    public function getName(){
+        return $this->element->getName();
     }
 }
 
