@@ -14,9 +14,26 @@ namespace MyShop {
     //    public function doSomething() {
     //        return implode(', ', $this->database->query());
     //    }
+    class DatabaseConstructorConsumer{
+        public function __construct(Database $database){
+            $this->db = $database;
+        }
+        function doSomething(){
+            return implode(', ', $this->db->query())
+        }
+    }
 
     // @TODO Implement constructor injection DatabaseSetterConsumer
     // with same worker method above
+    class DatabaseSetterConsumer{
+        function setDatabase(Database $database){
+            $this->db = $database;
+        }
+        
+        function doSomething(){
+            return implode(', ', $this->db->query());
+        }
+    }
 
 }
 
