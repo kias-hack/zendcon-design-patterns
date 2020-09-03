@@ -16,7 +16,24 @@ namespace MyCompanyShop {
 
     class ProductMapper
     {
-        //@TODO
+        function toProduct(array $data) : Product{
+            $product = new Product;
+            $product->name = $data['name'];
+            $product->price = $data['price'];
+            $product->manufacturer = new Manufacturer;
+            $product->manufacturer->name = $data['manufacturer_name'];
+            $product->manufacturer->url = $data['manufacturer_url'];
+            return $product;
+        }
+        function toArray(Product $product) : array{
+            $data = [];
+            $data['name'] = $product->name;
+            $data['price'] = $product->price;
+            $data['manufacturer_name'] = $product->manufacturer->name;
+            $data['manufacturer_url'] = $product->manufacturer->url;
+            
+            return $data;
+        }
     }
 }
 
