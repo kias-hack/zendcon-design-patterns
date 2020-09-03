@@ -35,11 +35,9 @@ class ProxyImage implements ImageInterface
     
     public function display(){
         if(empty($this->image)){
-            $this->image = new Image($this->filename);
-            $this->image->display();
+            $this->image = new Image($this->filename;
         }
-        else
-            $this->image->display();
+        return $this->image->display();
     }
 }
 
