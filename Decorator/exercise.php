@@ -30,7 +30,12 @@ abstract class HtmlDecorator implements HtmlElement
 {
     protected $element;
 
-    // @todo here the code to implement
+    abstract public function __toString(){
+        return "<input type=\"text\" id=\"{$this->name}\" name=\"{$this->name}\" />\n";
+    }
+    abstract public function getName(){
+        return $this->name;
+    }
 }
 
 class LabelDecorator extends HtmlDecorator
